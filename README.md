@@ -4,7 +4,7 @@ This app helps users to look at a restaurant’s menu and view the details of th
 
 ![](../master/doc/screenshot.png)
 
-[![BCH compliance](https://bettercodehub.com/edge/badge/Jara555/Journal?branch=master)](https://bettercodehub.com/)
+[![BCH compliance](https://bettercodehub.com/edge/badge/Jara555/Restaurant?branch=master)](https://bettercodehub.com/)
 
-*** Created by Jara555 26-04-2018 ***
+*** Created by Jara555 09-05-2018 ***
 
