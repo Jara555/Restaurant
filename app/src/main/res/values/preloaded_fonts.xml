@@ -2,6 +2,9 @@
 <resources>
     <array name="preloaded_fonts" translatable="false">
         <item>@font/alef</item>
+        <item>@font/amita</item>
         <item>@font/simonetta</item>
+        <item>@font/simonetta_black</item>
+        <item>@font/sofia</item>
     </array>
 </resources>
