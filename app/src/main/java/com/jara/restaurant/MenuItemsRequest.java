@@ -17,13 +17,13 @@ import java.util.ArrayList;
 
 public class MenuItemsRequest implements Response.Listener<JSONObject>, Response.ErrorListener {
     /** Specialized request class, which downloads data from the server
-     * and transforms this to a list of strings **/
+     * and transforms this to a list of MenuItems **/
 
     /* Properties */
     private Context context;
-    private static String url = "https://resto.mprog.nl/menu";
-    private ArrayList<MenuItem> menuItems = new ArrayList<>();
     private Callback activity;
+    private String category;
+    private ArrayList<MenuItem> menuItems = new ArrayList<>();
 
     /* Interface */
     public interface Callback {
@@ -32,11 +32,12 @@ public class MenuItemsRequest implements Response.Listener<JSONObject>, Response
     }
 
     /* Constructor */
-    public MenuItemsRequest(Context context) {
+    public MenuItemsRequest(Context context, String category) {
         this.context = context;
+        this.category = category;
     }
 
-    /* Retrieves categories from API */
+    /* Retrieves menu items from API */
     public void getMenuItems(Callback inputActivity) {
         // initialize activity
         activity = inputActivity;
@@ -44,7 +45,8 @@ public class MenuItemsRequest implements Response.Listener<JSONObject>, Response
         // create new request queue
         RequestQueue queue = Volley.newRequestQueue(context);
 
-        // request data from API and add to queue
+        // request data from url and add to queue
+        String url = "https://resto.mprog.nl/menu?category=" + category;
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(url,
                 null, this, this);
         queue.add(jsonObjectRequest);
@@ -53,14 +55,11 @@ public class MenuItemsRequest implements Response.Listener<JSONObject>, Response
     /* Request succeeded */
     @Override
     public void onResponse(JSONObject response) {
-        // transform json array to MenuItem array
         try {
-            // get all items
+            // iterate over all items of json array
             JSONArray menuArray = response.getJSONArray("items");
-
-            // iterate over items and write to MenuItem objects
             for (int i = 0; i < menuArray.length(); i++) {
-                // get i'th item of array
+                // get i'th menu object of array
                 JSONObject menuObject = menuArray.getJSONObject(i);
 
                 // retrieve all info of item
@@ -74,16 +73,17 @@ public class MenuItemsRequest implements Response.Listener<JSONObject>, Response
                 MenuItem menuItem = new MenuItem(category, description, price, imageUrl, name);
                 menuItems.add(menuItem);
             }
-            // pass MenuItem list through
+            // pass menu items through to got method
             activity.gotMenuItems(menuItems);
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
 
-    /* Gets error message if request not succeeded */
+    /* Gets error message if request failed */
     @Override
     public void onErrorResponse(VolleyError error) {
+        // pass message through to got error method
         activity.gotMenuItemsError(error.getMessage());
     }
 }

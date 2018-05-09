@@ -1,13 +1,18 @@
 package com.jara.restaurant;
 
-public class MenuItem {
+import java.io.Serializable;
 
+public class MenuItem implements Serializable {
+    /** MenuItem class containing all properties and methods for MenuItem objects **/
+
+    /* Properties */
     private String category;
     private String description;
     private String price;
     private String imageUrl;
     private String name;
 
+    /* Constructor */
     public MenuItem(String category, String description, String price, String imageUrl, String name) {
         this.category = category;
         this.description = description;
@@ -16,6 +21,7 @@ public class MenuItem {
         this.name = name;
     }
 
+    /* Getters */
     public String getCategory() {
         return category;
     }
@@ -36,6 +42,7 @@ public class MenuItem {
         return name;
     }
 
+    /* Setters */
     public void setCategory(String category) {
         this.category = category;
     }

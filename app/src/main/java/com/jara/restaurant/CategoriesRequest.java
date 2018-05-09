@@ -21,9 +21,8 @@ public class CategoriesRequest implements Response.Listener<JSONObject>, Respons
 
     /* Properties */
     private Context context;
-    private static String url = "https://resto.mprog.nl/categories";
-    private ArrayList<String> categories = new ArrayList<>();
     private Callback activity;
+    private ArrayList<String> categories = new ArrayList<>();
 
     /* Interface */
     public interface Callback {
@@ -44,22 +43,23 @@ public class CategoriesRequest implements Response.Listener<JSONObject>, Respons
         // create new request queue
         RequestQueue queue = Volley.newRequestQueue(context);
 
-        // request data from API and add to queue
+        // request data from url and add to queue
+        String url = "https://resto.mprog.nl/categories";
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(url,
                 null, this, this);
         queue.add(jsonObjectRequest);
     }
 
-    /* Request succeeded */
+    /* Extracts categories when request succeeded */
     @Override
     public void onResponse(JSONObject response) {
-        // transform json to array list of type string
         try {
+            // transform JSONObject to array and retrieve categories
             JSONArray categoriesArray = response.getJSONArray("categories");
-            // extract categories present in response
             for (int i = 0; i < categoriesArray.length(); i++) {
                 categories.add(categoriesArray.getString(i));
             }
+            // pass categories through to got categories method
             activity.gotCategories(categories);
         } catch (JSONException e) {
             e.printStackTrace();
@@ -69,6 +69,7 @@ public class CategoriesRequest implements Response.Listener<JSONObject>, Respons
     /* Gets error message if request not succeeded */
     @Override
     public void onErrorResponse(VolleyError error) {
+        // pass message through to got error method
         activity.gotCategoriesError(error.getMessage());
     }
 }
